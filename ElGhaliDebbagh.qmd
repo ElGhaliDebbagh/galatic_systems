@@ -5,5 +5,82 @@ format: html
 editor: visual
 ---
 
-https://github.com/ElGhaliDebbagh/galatic_systems
+#Question 2 https://github.com/ElGhaliDebbagh/galatic_systems
+
+#Question 3
+
+```{r}
+#| message: false
+here::i_am("ElGhaliDebbagh.Rproj")
+library(here)
+library(vroom)
+library(dplyr)
+library (stringr)
+library(readr)
+library(knitr)
+
+
+```
+
+```{r}
+library(tidyr)
+library(ggplot2)
+
+```
+
+```{r}
+
+
+star_systems <- vroom(here("datasystems.csv"))
+
+
+num_star_systems <- nrow(star_systems)
+num_variables <- ncol(star_systems)
+
+
+valid_loading <- num_star_systems == 1048 && num_variables == 8
+
+if (valid_loading) {
+  cat("Data loaded successfully. Number of star systems:", num_star_systems, "\n")
+} else {
+  cat("Error loading data. Check the data file and loading process.\n")
+}
+
+numeric_variables <- sapply(star_systems, is.numeric)
+if (all(numeric_variables)) {
+  cat("All numerical variables are recognized.\n")
+} else {
+  cat("Not all variables are recognized as numerical.\n")
+}
+
+```
+
+#Question 4
+
+```{r}
+
+missing_values <- colSums(is.na(star_systems))
+
+
+num_obs_with_missing <- sum(apply(star_systems,1,anyNA))
+
+
+data_summary <- data.frame(
+  Metric=c("Number oobservations", "Number of variables", "Number of missin values", "Number of observations with at least one missing value"),
+  Value=c(num_star_systems, num_variables, paste(missing_values, collapse=","),num_obs_with_missing)
+)
+kable(data_summary, format="markdown")
+
+```
+
+
+#Question 5
+```{r}
+#| warning = false
+ggplot(star_systems, aes(x = `STAR TEMPERATURE`, y = `relative luminosity`)) +
+  geom_point() +
+  labs(title = "Luminosity vs Temperature",
+       x = "Temperature (Kelvin)",
+       y = "Relative Luminosity")
+```
 
