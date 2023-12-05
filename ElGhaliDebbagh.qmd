@@ -103,3 +103,4 @@ for (variable in numerical_variables) {
 kable(extreme_stars, format = "markdown", col.names = c("Variable", "Max Star", "Max value", "Min star", "Min value"))
 ```
 
+#Question 7
