@@ -76,11 +76,30 @@ kable(data_summary, format="markdown")
 
 #Question 5
 ```{r}
-#| warning = false
 ggplot(star_systems, aes(x = `STAR TEMPERATURE`, y = `relative luminosity`)) +
   geom_point() +
   labs(title = "Luminosity vs Temperature",
-       x = "Temperature (Kelvin)",
+       x = "Temperature",
        y = "Relative Luminosity")
+```
+
+#Question 6
+```{r}
+extreme_stars <- data.frame(Variable=character(), Max_star=character(), Max_value=numeric(), Min_Star=character(), Min_Value=numeric())
+
+numerical_variables<- names(star_systems)[sapply(star_systems, is.numeric)]
+for (variable in numerical_variables) {
+  max_index <-which.max(star_systems[[variable]])
+  min_index<-which.min(star_systems[[variable]])
+  
+  extreme_stars<-rbind(extreme_stars,
+                       data.frame(Variable=variable,
+                                  Max_star=star_systems$Star_idx[max_index],
+                                  Max_Value=star_systems[[variable]][max_index],
+                                  Min_star=star_systems$Star_idx[min_index],
+                                  Min_Value=star_systems[[variable]][min_index]))
+  
+}
+kable(extreme_stars, format = "markdown", col.names = c("Variable", "Max Star", "Max value", "Min star", "Min value"))
 ```
 
