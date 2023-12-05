@@ -3,6 +3,10 @@ title: "Debbagh"
 author: "El Ghali Debbagh"
 format: html
 editor: visual
+execute: 
+  warning: false
+  error: false
+  echo: false
 ---
 
 #Question 2 https://github.com/ElGhaliDebbagh/galatic_systems
@@ -31,7 +35,7 @@ library(ggplot2)
 ```{r}
 
 
-star_systems <- vroom(here("datasystems.csv"))
+star_systems <- vroom(here("datasystems.csv"), )
 
 
 num_star_systems <- nrow(star_systems)
@@ -109,5 +113,50 @@ kable(extreme_stars, format = "markdown", col.names = c("Variable", "Max Star", 
 ```{r}
 factions <-vroom(here("Factions.csv"))
 sytem_faction<-vroom(here("SYTEM%FACTION.csv"))
+```
+#Question 9
+```{r}
+summary_table <- tibble(
+  "Faction" = c("Abandoned", "Independent", "Undiscovered"),
+  "Number of Star Systems" = c(
+    sum(sytem_faction$FKEY %in% c("A", "I")),
+    sum(sytem_faction$FKEY == "I"),
+    sum(sytem_faction$FKEY == "U")
+  )
+)
+
+
+kable(summary_table, format = "markdown")
+```
+#Question 10
+```{r}
+missing_systems <- anti_join(star_systems, sytem_faction, by = "Star_idx")
+num_missing_systems <- nrow(missing_systems)
+cat("number of star systems that cannot be found in the SYSTEM- CONTROL.csv file.
+ :", num_missing_systems, "\n")
+
+```
+
+#Question 11
+```{r}
+merged_data <- merge(factions, sytem_faction, by ="FKEY")
+
+
+at_least1_system_factions <- merged_data %>%
+  group_by(`faction name`) %>%
+  filter(any(!is.na(Star_idx)))
+
+
+system_counts <- at_least1_system_factions %>%
+  group_by(`faction name`) %>%
+  summarise(Num_Systems = n())
+
+
+ggplot(system_counts, aes(x = reorder(`faction name`, Num_Systems), y = Num_Systems)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(title = "Number of Star Systems Controlled by Each Faction",
+       x = "Faction",
+       y = "Number of Star Systems") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
