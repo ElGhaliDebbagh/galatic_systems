@@ -104,3 +104,10 @@ kable(extreme_stars, format = "markdown", col.names = c("Variable", "Max Star", 
 ```
 
 #Question 7
+
+#Question 8
+```{r}
+factions <-vroom(here("Factions.csv"))
+sytem_faction<-vroom(here("SYTEM%FACTION.csv"))
+```
+
