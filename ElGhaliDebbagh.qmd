@@ -94,9 +94,9 @@ for (variable in numerical_variables) {
   
   extreme_stars<-rbind(extreme_stars,
                        data.frame(Variable=variable,
-                                  Max_star=star_systems$Star_idx[max_index],
+                                  Max_star=star_systems$STAR[max_index],
                                   Max_Value=star_systems[[variable]][max_index],
-                                  Min_star=star_systems$Star_idx[min_index],
+                                  Min_star=star_systems$STAR[min_index],
                                   Min_Value=star_systems[[variable]][min_index]))
   
 }
